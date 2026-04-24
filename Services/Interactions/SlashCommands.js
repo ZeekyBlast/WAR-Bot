@@ -31,30 +31,41 @@ module.exports = {
         });
 
         if (interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
-           return command.execute(interaction, client);
-        } else {
-            if (allowedRoles.length > 0) {
-                const memberRoles = interaction.member.roles.cache;
-
-                const hasPermission = allowedRoles.some(roleId => memberRoles.has(roleId));
-
-                if (!hasPermission) {
-                    return interaction.reply({
-                        content: "No permission to use this command",
-                        ephemeral: true
-                    });
-                }
-            }
+            return runCommand(interaction, client);
         }
 
+        if (allowedRoles.length > 0) {
+            const memberRoles = interaction.member.roles.cache;
+            const hasPermission = allowedRoles.some(roleId => memberRoles.has(roleId));
+
+            if (!hasPermission) {
+                return interaction.reply({
+                    content: "No permission to use this command",
+                    ephemeral: true
+                });
+            }
+        }       
+
+    return runCommand(interaction, client);
+
+
+    function runCommand(interaction, client) {
         const isSubCMD = interaction.options.getSubcommand(false);
-        if(isSubCMD) {
-            const subCMDFile = client.subCommands.get(`${interaction.commandName}.${isSubCMD}`)
-            if(!subCMDFile) return interaction.reply({
-                content: 'This subCommand is outdated',
-                ephemeral: true //makes the command only visible to the sender
+
+        if (isSubCMD) {
+            const subCMDFile = client.subCommands.get(`${interaction.commandName}.${isSubCMD}`);
+
+            if (!subCMDFile) {
+                return interaction.reply({
+                    content: 'This subCommand is outdated',
+                    ephemeral: true
             });
-            subCMDFile.execute(interaction, client);
-        } else command.execute(interaction, client);
+        }
+
+        return subCMDFile.execute(interaction, client);
+    }
+
+    return command.execute(interaction, client);
+        }
     }
 }
