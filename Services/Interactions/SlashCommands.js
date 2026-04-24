@@ -1,4 +1,4 @@
-const { ChatInputCommandInteraction } = require("discord.js")
+const { ChatInputCommandInteraction, PermissionFlagsBits } = require("discord.js")
 require('dotenv').config()
 const roleLink = require("../DB/RoleLinkService")
 
@@ -30,16 +30,20 @@ module.exports = {
             ephemeral: true
         });
 
-        if(allowedRoles.length > 0){
-            const memberRoles = interaction.member.roles.cache;
+        if (interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
+           return command.execute(interaction, client);
+        } else {
+            if (allowedRoles.length > 0) {
+                const memberRoles = interaction.member.roles.cache;
 
-            const hasPermission = allowedRoles.some(roleId => memberRoles.has(roleId))
+                const hasPermission = allowedRoles.some(roleId => memberRoles.has(roleId));
 
-            if(!hasPermission){
-                return interaction.reply({
-                    content: "No permission to use this command",
-                    ephemeral: true
-                })
+                if (!hasPermission) {
+                    return interaction.reply({
+                        content: "No permission to use this command",
+                        ephemeral: true
+                    });
+                }
             }
         }
 
