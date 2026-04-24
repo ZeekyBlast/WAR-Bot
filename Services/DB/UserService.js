@@ -15,6 +15,14 @@ const addXPStmt = db.prepare(`
   UPDATE users SET xp = xp + ? WHERE userId = ?
 `);
 
+const addPointStmt = db.prepare(`
+  UPDATE users SET points = points + ? WHERE userId = ?
+`);
+
+const addLevelStmt = db.prepare(`
+  UPDATE users SET level = level + ? WHERE userId = ?
+`);
+
 module.exports = {
   getUser(userId) {
     return getUserStmt.get(userId);
@@ -26,5 +34,13 @@ module.exports = {
 
   addXP(userId, amount) {
     addXPStmt.run(amount, userId);
+  },
+
+  addPoints(userId, amount){
+    addPointStmt.run(amount, userId)
+  },
+
+  addLevel(userId, amount){
+    addLevelStmt.run(amount, userId)
   }
 };
