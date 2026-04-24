@@ -1,5 +1,6 @@
 const { ChatInputCommandInteraction, SlashCommandBuilder, Events, ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, Client, Guild, GuildMember, MessageFlags,  } = require('discord.js')
-const userService = require('../../Services/DB/UserService')
+const userService = require('../../Services/DB/UserService');
+const roleLink = require('../../Services/DB/RoleLinkService');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -38,9 +39,6 @@ module.exports = {
 
             interaction.reply(`Level: ${targetLevel.level}, XP: ${targetLevel.xp}`)
         }
-
-
-
     }
     
 }

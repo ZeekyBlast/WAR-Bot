@@ -1,5 +1,6 @@
 const { ChatInputCommandInteraction } = require("discord.js")
 require('dotenv').config()
+const roleLink = require("../DB/RoleLinkService")
 
 module.exports = {
     name: "interactionCreate",
@@ -9,6 +10,7 @@ module.exports = {
      */
     execute(interaction, client){
         if(!interaction.isChatInputCommand()) return;
+        const allowedRoles = roleLink.getRoles(interaction.guild.id, `${interaction.commandName}`)
 
         const command = client.cmds.get(interaction.commandName)
         if(!command) return interaction.reply({
@@ -27,6 +29,19 @@ module.exports = {
             content: "This command is only avaible to the bot's owner if this is a mistake contact me here on discord: zeekyblast",
             ephemeral: true
         });
+
+        if(allowedRoles.length > 0){
+            const memberRoles = interaction.member.roles.cache;
+
+            const hasPermission = allowedRoles.some(roleId => memberRoles.has(roleId))
+
+            if(!hasPermission){
+                return interaction.reply({
+                    content: "No permission to use this command",
+                    ephemeral: true
+                })
+            }
+        }
 
         const isSubCMD = interaction.options.getSubcommand(false);
         if(isSubCMD) {

@@ -12,4 +12,13 @@ db.exec(`
   )
 `);
 
+db.exec(`
+    CREATE TABLE IF NOT EXISTS command_roles (
+      guildId TEXT,
+      commandName TEXT,
+      roleId TEXT,
+      PRIMARY KEY (guildId, commandName, roleId)
+    )
+  `)
+
 module.exports = db;
