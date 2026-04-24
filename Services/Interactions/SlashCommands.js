@@ -22,6 +22,12 @@ module.exports = {
             ephemeral: true
         });
 
+        if(command.owner && interaction.user.id !== `${process.env.OWNER}`)
+        return interaction.reply({
+            content: "This command is only avaible to the bot's owner if this is a mistake contact me here on discord: zeekyblast",
+            ephemeral: true
+        });
+
         const isSubCMD = interaction.options.getSubcommand(false);
         if(isSubCMD) {
             const subCMDFile = client.subCommands.get(`${interaction.commandName}.${isSubCMD}`)
