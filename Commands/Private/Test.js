@@ -2,6 +2,7 @@ const { ChatInputCommandInteraction, SlashCommandBuilder, Events, ActionRowBuild
 
 
 module.exports = {
+    developer: true,
     data: new SlashCommandBuilder()
     .setName("test")
     .setDescription("For testing shit"),
