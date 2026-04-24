@@ -3,7 +3,7 @@ const userService = require('../../Services/DB/UserService');
 const roleLink = require('../../Services/DB/RoleLinkService');
 
 module.exports = {
-    subCommand: "level.addlevel",
+    subCommand: "level.setlevel",
     /**
      * 
      * @param {ChatInputCommandInteraction} interaction 
@@ -20,7 +20,7 @@ module.exports = {
             return;
         }
 
-        const newLevel = userData.level + amount
+        const newLevel = userData.level = amount
 
         userService.saveUser({
             userId: target.id,
@@ -30,7 +30,7 @@ module.exports = {
         })
 
         interaction.reply({
-            content: `✅ Added **${amount}** levels to **${target.username}** (Total: **${newLevel}**) `
+            content: `✅ Set **${amount}** levels to **${target.username}** (Total: **${newLevel}**) `
         })
 
     }
