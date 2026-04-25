@@ -6,7 +6,7 @@ module.exports = {
     name: 'clientReady', // name
     once: true, //if it happens more then once
     async execute(client) { //anything in the () is something that isn't basic js so if you need the client which is the bot you put it in there
-        client.user.setPresence({ activities: [{ name: 'Anybody can find love (expect you)', type: ActivityType.Listening }] });
+        client.user.setPresence({ activities: [{ name: 'Be my zombie', type: ActivityType.Listening }] });
 
         for (const [guildId, guild] of client.guilds.cache){
             await guild.members.fetch();
