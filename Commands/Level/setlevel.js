@@ -24,7 +24,7 @@ module.exports = {
 
         userService.saveUser({
             userId: target.id,
-            guildId: user.guildId,
+            guildId: userData.guildId,
             level: newLevel,
             xp: userData.xp,
             points: userData.points
