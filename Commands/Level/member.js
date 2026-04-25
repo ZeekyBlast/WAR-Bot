@@ -35,6 +35,7 @@ module.exports = {
                 .setRequiredXP(required)
                 .setLevel(userLevel.level)
                 .setUsername(interaction.user.username)
+                .setBackground(`IMAGE`, "https://i.pinimg.com/736x/03/23/ad/0323ad804e005bb1ed5b8f694bb5c6a9.jpg")
                 .setRank(rank)
 
             const img = await card.build();
@@ -60,6 +61,7 @@ module.exports = {
             .setRequiredXP(required)
             .setLevel(targetLevel.level)
             .setUsername(target.username)
+            .setBackground(`IMAGE`, "https://i.pinimg.com/736x/03/23/ad/0323ad804e005bb1ed5b8f694bb5c6a9.jpg")
             .setRank(rank)
 
         const img = await Targetcard.build();
