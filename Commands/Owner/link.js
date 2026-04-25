@@ -28,7 +28,12 @@ module.exports = {
     async execute(interaction, client, user){ 
         const commandRun = interaction.options.getString("command")
         const role = interaction.options.getRole("role")
-        const command = client.cmds.get(commandRun)
+        let command = client.cmds.get(commandRun)
+
+        if(!command){
+            command = client.subCommands.get(commandRun);
+        }
+
         if (!command) {
         return interaction.reply({
             content: `❌ The command **/${commandRun}** does not exist.`,

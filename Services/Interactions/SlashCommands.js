@@ -10,7 +10,19 @@ module.exports = {
      */
     execute(interaction, client){
         if(!interaction.isChatInputCommand()) return;
-        const allowedRoles = roleLink.getRoles(interaction.guild.id, `${interaction.commandName}`)
+
+        const sub = interaction.options.getSubcommand(false);
+        const fullCommand = sub ? `${interaction.commandName}.${sub}` : interaction.commandName;
+
+        const allowedRoles = roleLink.getRoles(interaction.guild.id, fullCommand);
+        const memberRoles = interaction.member.roles.cache;
+
+        const hasLinkedRole = allowedRoles.some(roleId => memberRoles.has(roleId));
+        const isAdmin = interaction.member.permissions.has(PermissionFlagsBits.Administrator);
+
+        interaction.allowedRoles = allowedRoles;
+        interaction.hasLinkedRole = hasLinkedRole;
+        interaction.isAdmin = isAdmin;
 
         const command = client.cmds.get(interaction.commandName)
         if(!command) return interaction.reply({
@@ -35,16 +47,22 @@ module.exports = {
         }
 
         if (allowedRoles.length > 0) {
-            const memberRoles = interaction.member.roles.cache;
-            const hasPermission = allowedRoles.some(roleId => memberRoles.has(roleId));
-
-            if (!hasPermission) {
+            if (!hasLinkedRole && !isAdmin) {
                 return interaction.reply({
                     content: "No permission to use this command",
                     ephemeral: true
                 });
+        }
+        }
+
+        else{
+            if (!isAdmin){
+                return interaction.reply({
+                    content: "You need the **Admin** permission to use this command",
+                    ephemeral: true
+                });
             }
-        }       
+        }
 
     return runCommand(interaction, client);
 

@@ -22,4 +22,15 @@ db.exec(`
     )
   `)
 
+db.exec(`
+     CREATE TABLE IF NOT EXISTS cases (
+       caseNumber INTEGER DEFAULT 0,
+       userId TEXT,
+       guildId TEXT,
+       caseType TEXT CHECK(caseType IN ('mute', 'kick', 'ban', 'warn')),
+       caseReason TEXT,
+       PRIMARY KEY (caseNumber, guildId)
+     )
+  `)
+
 module.exports = db;
