@@ -6,6 +6,7 @@ db.pragma('journal_mode = WAL');
 db.exec(`
   CREATE TABLE IF NOT EXISTS users (
     userId TEXT PRIMARY KEY,
+    guildId TEXT,
     level INTEGER DEFAULT 1,
     xp INTEGER DEFAULT 0,
     points INTEGER DEFAULT 0

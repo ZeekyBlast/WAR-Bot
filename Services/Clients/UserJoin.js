@@ -15,6 +15,7 @@ name: 'guildMemberAdd', // name
 
         userService.saveUser({
             userId: user.user.id,
+            guildId: user.guild.id,
             level: 1,
             xp: 0,
             points: 0

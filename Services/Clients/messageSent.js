@@ -36,8 +36,9 @@ module.exports = {
         setTimeout(() => cooldowns.delete(message.author.id), cooldownAmount)
 
         const userId = message.author.id;
+        const guildId = message.guild.id;
 
-        const result = await addXPAndCheckLevel(userId, 5);
+        const result = await addXPAndCheckLevel(userId, guildId, 5);
 
 
         if(result?.leveledUp){

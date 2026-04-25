@@ -1,6 +1,8 @@
-const { ChatInputCommandInteraction, SlashCommandBuilder, Events, ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, Client, Guild, GuildMember, MessageFlags, PermissionFlagsBits, EmbedBuilder, Colors,  } = require('discord.js')
+const { ChatInputCommandInteraction, SlashCommandBuilder, Events, ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, Client, Guild, GuildMember, MessageFlags, PermissionFlagsBits, EmbedBuilder, Colors, AttachmentBuilder, ALLOWED_EXTENSIONS  } = require('discord.js')
 const userService = require('../../Services/DB/UserService');
 const roleLink = require('../../Services/DB/RoleLinkService');
+const { Rank } = require('canvacord')
+const { calcRequiredXP } = require('../../Services/DB/mathService')
 
 module.exports = {
     subCommand: "level.member",
@@ -15,7 +17,7 @@ module.exports = {
 
 
         if(!target){
-            const userLevel = userService.getUser(user)
+            const userLevel = userService.getUser(user, interaction.guild.id)
 
             if(!userLevel) {
                 interaction.reply({
@@ -24,38 +26,45 @@ module.exports = {
                 })
             }
 
-            let userEmbed = new EmbedBuilder()
-            .setDescription(`
-                **Level**: ${userLevel.level}\n
-                **XP**: ${userLevel.xp}\n
-                **Points**: ${userLevel.points}  
-            `)
-            .setFooter({
-                text: `${interaction.user.username}`,
-                iconURL: interaction.user.avatarURL()
-            })
-            .setThumbnail(interaction.user.avatarURL())
-            .setColor(Colors.Gold)
+            const required = calcRequiredXP(userLevel.level)
+            const { rank, total } = userService.getUserRank(user, interaction.guild.id)
 
-            await interaction.reply({ embeds: [userEmbed] }).then(() => setTimeout (() => interaction.deleteReply(), 20000))
-        }else{
-            const targetLevel = userService.getUser(target.id)
+            const card = new Rank()
+                .setAvatar(interaction.user.avatarURL({ extension: 'png' }))
+                .setCurrentXP(userLevel.xp)
+                .setRequiredXP(required)
+                .setLevel(userLevel.level)
+                .setUsername(interaction.user.username)
+                .setRank(rank)
 
-            let targetEmbed = new EmbedBuilder()
-            .setColor(Colors.Gold)
-            .setDescription(`
-                **Level**: ${targetLevel.level}\n
-                **XP**: ${targetLevel.xp}\n
-                **Points**: ${targetLevel.points}  
-            `)
-            .setFooter({
-                text: `${target.username}`,
-                iconURL: target.avatarURL()
-            })
-            .setThumbnail(target.avatarURL())
+            const img = await card.build();
+            const attachmentUser = new AttachmentBuilder(img, { name: "rank.png" }) 
 
-            await interaction.reply({ embeds: [targetEmbed] }).then(() => setTimeout (() => interaction.deleteReply(), 20000))
+            return interaction.reply({ files: [attachmentUser] }).then(() => setTimeout (() => interaction.deleteReply(), 20000))
         }
+        const targetLevel = userService.getUser(target.id, interaction.guild.id);
+
+            if (!targetLevel) {
+                return interaction.reply({
+                    content: `${target.username} has no XP data.`,
+                    flags: [MessageFlags.Ephemeral]
+                });
+            }
+
+        const required = calcRequiredXP(targetLevel.level);
+        const { rank, total } = userService.getUserRank(target.id, interaction.guild.id)
+
+        const Targetcard = new Rank()
+            .setAvatar(target.displayAvatarURL({ extension: 'png' }))
+            .setCurrentXP(targetLevel.xp)
+            .setRequiredXP(required)
+            .setLevel(targetLevel.level)
+            .setUsername(target.username)
+            .setRank(rank)
+
+        const img = await Targetcard.build();
+        const attachmentTarget = new AttachmentBuilder(img, { name: "rank.png" });
+
+        return interaction.reply({ files: [attachmentTarget] }).then(() => setTimeout(() => interaction.deleteReply(), 20000));
     }
-    
-}
+ }

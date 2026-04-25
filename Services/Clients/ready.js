@@ -14,11 +14,12 @@ module.exports = {
             guild.members.cache.forEach(member => {
                 if (member.user.bot) return;
 
-                const existing = userService.getUser(member.id);
+                const existing = userService.getUser(member.id, guild.id);
 
                 if(!existing){
                     userService.saveUser({
                         userId: member.id,
+                        guildId: guild.id,
                         level: 1,
                         xp: 0,
                         points: 0

@@ -1,8 +1,8 @@
 const userService = require("../DB/UserService");
 const { calcRequiredXP } = require("../DB/mathService")
 
-async function addXPAndCheckLevel(userId, amount) {
-    const user = userService.getUser(userId);
+async function addXPAndCheckLevel(userId, guildId, amount,) {
+    const user = userService.getUser(userId, guildId);
 
     
     if (!user) return;
@@ -13,7 +13,6 @@ async function addXPAndCheckLevel(userId, amount) {
 
     let required = calcRequiredXP(user.level);
 
-    
 
     while (user.xp >= required) {
         user.xp -= required;

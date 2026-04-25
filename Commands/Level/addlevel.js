@@ -14,7 +14,7 @@ module.exports = {
         const target = interaction.options.getUser('target')
         const amount = interaction.options.getNumber('level')
 
-        const userData = userService.getUser(target.id);
+        const userData = userService.getUser(target.id, interaction.guild.id);
 
         if (!userData){
             return;
@@ -24,6 +24,7 @@ module.exports = {
 
         userService.saveUser({
             userId: target.id,
+            guildId: userData.guildId,
             level: newLevel,
             xp: userData.xp,
             points: userData.points
