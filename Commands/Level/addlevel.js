@@ -16,6 +16,17 @@ module.exports = {
 
         const userData = userService.getUser(target.id, interaction.guild.id);
 
+        const hasLinkedRole = interaction.hasLinkedRole;
+        const isAdmin = interaction.isAdmin;
+
+
+        if (interaction.member.permissions.has(PermissionFlagsBits.ManageMessages) && !hasLinkedRole && !isAdmin) {
+             return interaction.reply({
+                content: "You need **ManageMessages** to use this command",
+                ephemeral: true
+            });
+        }
+
         if (!userData){
             return;
         }

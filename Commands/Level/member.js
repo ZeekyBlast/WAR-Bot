@@ -15,6 +15,17 @@ module.exports = {
         const user = interaction.user.id
         const target = interaction.options.getUser('target')
 
+        if (interaction.member.permissions.has(PermissionFlagsBits.ManageMessages) && !hasLinkedRole && !isAdmin) {
+             return interaction.reply({
+                content: "You need **ManageMessages** to use this command",
+                ephemeral: true
+            });
+        }
+
+        if (!userData){
+            return;
+        }
+
         if(!target){
             const userLevel = userService.getUser(user, interaction.guild.id)
 
