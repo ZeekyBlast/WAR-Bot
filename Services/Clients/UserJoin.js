@@ -43,7 +43,7 @@ name: 'guildMemberAdd', // name
 
         const existing = await userService.getUser(user.user.id, guildId);
 
-        If(!existing){
+        if(!existing){
             await userService.saveUser({
                 userId: user.user.id,
                 guildId: user.guild.id,
