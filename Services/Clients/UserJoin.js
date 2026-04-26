@@ -43,14 +43,15 @@ name: 'guildMemberAdd', // name
 
         const existing = await userService.getUser(user.user.id, guildId);
 
-        await userService.saveUser({
-            userId: user.user.id,
-            guildId: user.guild.id,
-            level: 1,
-            xp: 0,
-            points: 0,
-            invites: 0
-        })
+        If(!existing){
+            await userService.saveUser({
+                userId: user.user.id,
+                guildId: user.guild.id,
+                level: 1,
+                xp: 0,
+                points: 0,
+                invites: 0
+        })}
 
         if (inviter) {
             await userService.addInvite(inviter.id, 1, guildId);
