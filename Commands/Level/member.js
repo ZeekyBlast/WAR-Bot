@@ -15,7 +15,6 @@ module.exports = {
         const user = interaction.user.id
         const target = interaction.options.getUser('target')
 
-
         if(!target){
             const userLevel = userService.getUser(user, interaction.guild.id)
 
