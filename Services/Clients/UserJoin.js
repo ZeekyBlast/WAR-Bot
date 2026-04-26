@@ -18,7 +18,8 @@ name: 'guildMemberAdd', // name
             guildId: user.guild.id,
             level: 1,
             xp: 0,
-            points: 0
+            points: 0,
+            invites: 0
         })
 
         console.log(`User added to DB: ${user.user.username}`)

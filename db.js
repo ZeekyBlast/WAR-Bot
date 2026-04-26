@@ -9,7 +9,8 @@ db.exec(`
     guildId TEXT,
     level INTEGER DEFAULT 1,
     xp INTEGER DEFAULT 0,
-    points INTEGER DEFAULT 0
+    points INTEGER DEFAULT 0,
+    invites INTEGER DEFAULT 0
   )
 `);
 

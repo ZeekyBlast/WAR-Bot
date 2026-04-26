@@ -4,12 +4,13 @@ const getUserStmt = db.prepare('SELECT * FROM users WHERE userId = ? AND guildId
 
 const createOrUpdateUserStmt = db.prepare(`
   INSERT INTO users (userId, guildId, level, xp, points)
-  VALUES (@userId, @guildId, @level, @xp, @points)
+  VALUES (@userId, @guildId, @level, @xp, @points, @invites)
   ON CONFLICT(userId) DO UPDATE SET
     guildId = excluded.guildId,
     level = excluded.level,
     xp = excluded.xp,
-    points = excluded.points
+    points = excluded.points,
+    invites = excluded.points
 `);
 
 const addXPStmt = db.prepare(`
@@ -23,6 +24,10 @@ const addPointStmt = db.prepare(`
 const addLevelStmt = db.prepare(`
   UPDATE users SET level = level + ? WHERE userId = ? AND guildId = ?
 `);
+
+const addInviteStmt = db.prepare(`
+  UPDATE users SET invite = invite + ? WHERE userId = ? AND guildId = ?   
+`)
 
 function getUserRank(userId, guildId){
   const users = db.prepare(`
@@ -59,6 +64,10 @@ module.exports = {
   },
 
   addLevel(userId, amount, guildId){
+    addLevelStmt.run(amount, userId)
+  },
+
+  addInvite(userId, amount, guildId, guildId){
     addLevelStmt.run(amount, userId)
   },
 

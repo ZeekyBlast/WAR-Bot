@@ -22,7 +22,8 @@ module.exports = {
                         guildId: guild.id,
                         level: 1,
                         xp: 0,
-                        points: 0
+                        points: 0,
+                        invites: 0
                     })
 
                     console.log(`Added new user to DB: ${member.user.tag}`);
