@@ -3,14 +3,14 @@ const userService = require('../../Services/DB/UserService');
 const roleLink = require('../../Services/DB/RoleLinkService');
 
 module.exports = {
-    subCommand: "bot.nickname",
+    subCommand: "bot.bio",
     /**
      * 
      * @param {ChatInputCommandInteraction} interaction 
      * @param {Client} client 
      */
     async execute(interaction, client, user){ 
-        const nickname = interaction.options.getString("name")
+        const bioDetails = interaction.options.getString("bio")
 
         const hasLinkedRole = interaction.hasLinkedRole;
         const isAdmin = interaction.isAdmin;
@@ -24,11 +24,11 @@ module.exports = {
         }
 
         interaction.guild.members.editMe({
-            nick: nickname
+            bio: bioDetails
         })
 
         await interaction.reply({
-            content: `Updated my name to ${nickname}`,
+            content: `Updated my bio to ${bioDetails}`,
             flags: [MessageFlags.Ephemeral]
         })
 
