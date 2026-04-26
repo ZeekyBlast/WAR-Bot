@@ -1,6 +1,7 @@
 const { loadCMDS } = require('../../Handlers/commandHandler')
 const userService = require('../DB/UserService')
 const { PresenceUpdateStatus, ActivityType } = require('discord.js')
+const { updateGuildInv } = require('../Invites/inviteCache')
 
 module.exports = {
     name: 'clientReady', // name
@@ -8,6 +9,16 @@ module.exports = {
     async execute(client) { //anything in the () is something that isn't basic js so if you need the client which is the bot you put it in there
         client.user.setPresence({ activities: [{ name: 'Be my zombie', type: ActivityType.Listening }] });
 
+        for (const [guildId, guild] of client.guilds.cache) {
+            try {
+                const invites = await guild.invites.fetch();
+                updateGuildInv(guildId, [...invites.values()]);
+                console.log(`Cached ${invites.size} invites for ${guild.name}`);
+            } catch (err) {
+                console.error(`Failed to fetch invites for guild ${guildId}:`, err);
+            }
+        }
+        
         for (const [guildId, guild] of client.guilds.cache){
             await guild.members.fetch();
 

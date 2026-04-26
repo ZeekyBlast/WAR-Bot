@@ -38,7 +38,8 @@ module.exports = {
             guildId: userData.guildId,
             level: newLevel,
             xp: userData.xp,
-            points: userData.points
+            points: userData.points,
+            invites: userData.invites
         })
 
         interaction.reply({
