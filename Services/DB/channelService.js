@@ -7,8 +7,8 @@ const createOrUpdateChannelStmt = db.prepare(`
     VALUES (@guildId, @logs, @welcome, @invites)
     ON CONFLICT(guildId) DO UPDATE SET
         guildId = excluded.guildId,
-        logs = excluded.logs
-        welcome = excluded.welcome
+        logs = excluded.logs,
+        welcome = excluded.welcome,
         invites = excluded.invites
     `)
 

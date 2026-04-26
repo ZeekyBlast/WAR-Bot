@@ -36,10 +36,10 @@ db.exec(`
 
 db.exec(`
      CREATE TABLE IF NOT EXISTS channels (
-      guildId TEXT
-      logs TEXT
-      welcome TEXT
-      invites TEXT
+      guildId TEXT,
+      logs TEXT,
+      welcome TEXT,
+      invites TEXT,
       PRIMARY KEY (guildId)
      )
   `)
