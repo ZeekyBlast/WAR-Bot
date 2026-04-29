@@ -14,16 +14,14 @@ module.exports = {
     async execute(interaction, client){ 
         const user = interaction.user.id
         const target = interaction.options.getUser('target')
+        const hasLinkedRole = interaction.hasLinkedRole;
+        const isAdmin = interaction.isAdmin;
 
         if (interaction.member.permissions.has(PermissionFlagsBits.ManageMessages) && !hasLinkedRole && !isAdmin) {
              return interaction.reply({
                 content: "You need **ManageMessages** to use this command",
                 ephemeral: true
             });
-        }
-
-        if (!userData){
-            return;
         }
 
         if(!target){
@@ -44,7 +42,7 @@ module.exports = {
                 .setCurrentXP(userLevel.xp)
                 .setRequiredXP(required)
                 .setLevel(userLevel.level)
-                .setUsername(interaction.user.username)
+                .setUsername(interaction.user.globalName)
                 .setBackground(`IMAGE`, "https://i.pinimg.com/736x/03/23/ad/0323ad804e005bb1ed5b8f694bb5c6a9.jpg")
                 .setRank(rank)
 
@@ -70,7 +68,7 @@ module.exports = {
             .setCurrentXP(targetLevel.xp)
             .setRequiredXP(required)
             .setLevel(targetLevel.level)
-            .setUsername(target.username)
+            .setUsername(target.globalName)
             .setBackground(`IMAGE`, "https://i.pinimg.com/736x/03/23/ad/0323ad804e005bb1ed5b8f694bb5c6a9.jpg")
             .setRank(rank)
 
