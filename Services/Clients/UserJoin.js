@@ -59,15 +59,15 @@ name: 'guildMemberAdd', // name
         }
 
         const row = chnlService.getChannel(guildId);
-        const logChannelId = row?.invites;
-        const logChnl = logChannelId ? user.guild.channels.cache.get(logChannelId) : null;
+        const invChannelId = row?.invites;
+        const invChnl = invChannelId ? user.guild.channels.cache.get(invChannelId) : null;
 
-            if(logChnl){
+            if(invChnl){
                 if(inviter){
                     const userInviter = await userService.getUser(inviter.id, guildId);
-                    logChnl.send(`${user.user.tag} joined - invite created by ${inviter.tag}\nInvites: ${userInviter.invites}`)
+                    invChnl.send(`${user.user.tag} joined - invite created by ${inviter.tag}\nInvites: ${userInviter.invites}`)
                 }else{
-                    logChnl.send(`${user.user.tag} joined - inviter is vanity`);
+                    invChnl.send(`${user.user.tag} joined - inviter is vanity`);
                 }
             }
         return;
