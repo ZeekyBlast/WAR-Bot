@@ -34,14 +34,14 @@ module.exports = {
     },
 
     updateLogs(guildId, logs){
-        updateLogsChannelStmt.run(guildId, logs)
+        updateLogsChannelStmt.run(logs, guildId)
     },
 
     updateWelcome(guildId, welcome){
-        updateWelcomeChannelStmt.run(guildId, welcome)
+        updateWelcomeChannelStmt.run(welcome, guildId)
     },
 
     updateInvite(guildId, invite){
-        updateInviteChannelStmt.run(guildId, invite)
+        updateInviteChannelStmt.run(invite, guildId)
     }
 }

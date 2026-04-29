@@ -68,7 +68,7 @@ module.exports = {
   },
 
   addInvite(userId, amount, guildId){
-    addInviteStmt.run(userId, amount, guildId)
+    addInviteStmt.run(amount, userId, guildId)
   },
 
   getUserRank

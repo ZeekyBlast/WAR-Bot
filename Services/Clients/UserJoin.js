@@ -1,6 +1,7 @@
 const { ChatInputCommandInteraction, EmbedBuilder, GuildMember } = require('discord.js')
 const userService = require("../DB/UserService")
 const { getGuildInv,updateGuildInv } = require("../Invites/inviteCache")
+const chnlService = require("../DB/channelService")
 
 module.exports = {
 name: 'guildMemberAdd', // name
@@ -55,12 +56,20 @@ name: 'guildMemberAdd', // name
 
         if (inviter) {
             await userService.addInvite(inviter.id, 1, guildId);
-            console.log(`${user.user.tag} joined - invited created by ${inviter.tag}`);
-
-            const userInviter = await userService.getUser(inviter.id, guildId);
-            console.log(userInviter ? userInviter.invites : "Inviter not found in DB");
-        } else {
-            console.log(`${user.user.tag} joined - inviter is vanity`);
         }
+
+        const row = chnlService.getChannel(guildId);
+        const logChannelId = row?.invites;
+        const logChnl = logChannelId ? user.guild.channels.cache.get(logChannelId) : null;
+
+            if(logChnl){
+                if(inviter){
+                    const userInviter = await userService.getUser(inviter.id, guildId);
+                    logChnl.send(`${user.user.tag} joined - invite created by ${inviter.tag}\nInvites: ${userInviter.invites}`)
+                }else{
+                    logChnl.send(`${user.user.tag} joined - inviter is vanity`);
+                }
+            }
+        return;
     }
 };
