@@ -40,6 +40,7 @@ db.exec(`
       logs TEXT,
       welcome TEXT,
       invites TEXT,
+      logSettings TEXT,
       PRIMARY KEY (guildId)
      )
   `)

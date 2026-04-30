@@ -1,6 +1,9 @@
-const { ChatInputCommandInteraction, PermissionFlagsBits } = require("discord.js")
+const { ChatInputCommandInteraction, PermissionFlagsBits, MessageFlags } = require("discord.js")
 require('dotenv').config()
 const roleLink = require("../DB/RoleLinkService")
+const logIndex = require("../logTypes/logIndex")
+const LoggingMnger = require("../Clients/loggingManger")
+const channelService = require("../DB/channelService")
 
 module.exports = {
     name: "interactionCreate",
@@ -9,6 +12,32 @@ module.exports = {
      * @param {ChatInputCommandInteraction} interaction 
      */
     execute(interaction, client){
+        if(interaction.isStringSelectMenu()){
+            if (interaction.customId === "tglLogType"){
+                const selected = interaction.values[0];
+                const guildId = interaction.guild.id
+                
+                const row = channelService.getChannel(guildId)
+
+                const settings = row?.logSettings ? JSON.parse(row.logSettings) : {}
+
+                const currentlyEnabled = settings[selected] === true;
+
+                settings[selected] = !currentlyEnabled;
+
+                channelService.updateField(guildId, "logSettings", JSON.stringify(settings))
+                LoggingMnger.refresh(guildId)
+
+                return interaction.reply({
+                    content: `${currentlyEnabled ? "🔴 Disabled" : "🟢 Enabled"} logging for **${selected}**`,
+                    components: [],
+                    flags: [MessageFlags.Ephemeral]
+                })
+
+            }
+        }
+
+
         if(!interaction.isChatInputCommand()) return;
 
         const sub = interaction.options.getSubcommand(false);

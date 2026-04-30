@@ -3,13 +3,14 @@ const db = require("../../db");
 const getChannelStmt = db.prepare('SELECT * FROM channels WHERE guildId = ?')
 
 const createOrUpdateChannelStmt = db.prepare(`
-    INSERT INTO channels (guildId, logs, welcome, invites)
-    VALUES (@guildId, @logs, @welcome, @invites)
+    INSERT INTO channels (guildId, logs, welcome, invites, logSettings)
+    VALUES (@guildId, @logs, @welcome, @invites, @logSettings)
     ON CONFLICT(guildId) DO UPDATE SET
         guildId = excluded.guildId,
         logs = excluded.logs,
         welcome = excluded.welcome,
-        invites = excluded.invites
+        invites = excluded.invites,
+        logSettings = excluded.logSettings
     `)
 
 const updateLogsChannelStmt = db.prepare(`
@@ -22,6 +23,10 @@ const updateWelcomeChannelStmt = db.prepare(`
 
 const updateInviteChannelStmt = db.prepare(`
     UPDATE channels SET invites = ? WHERE guildId = ?
+    `)
+
+const updateLogSettingsStmt = db.prepare(`
+    UPDATE channels SET logSettings = ? WHERE guildId = ?
     `)
 
 module.exports = {
@@ -43,5 +48,14 @@ module.exports = {
 
     updateInvite(guildId, invite){
         updateInviteChannelStmt.run(invite, guildId)
+    },
+
+    updateLogSettings(guildId, settings){
+        updateLogsChannelStmt.run(settings, guildId)
+    },
+
+    updateField(guildId, field, value){
+        const smt = db.prepare(`UPDATE channels SET ${field} = ? WHERE guildId = ?`)
+        smt.run(value, guildId)
     }
 }

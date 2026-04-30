@@ -17,7 +17,7 @@ module.exports = {
 
         if (!interaction.member.permissions.has(PermissionFlagsBits.ManageChannels) && !isAdmin && !hasLinkedRole){
              return interaction.reply({
-                content: "You need **Ban Members** to use this command",
+                content: "You need **Manage Channels** to use this command",
                 ephemeral: true
             });
         }
@@ -26,7 +26,6 @@ module.exports = {
         
         if(option === "opt_invites"){
             const chnlId = chnl.id
-            console.log(chnlId)
 
             const existing = chnlService.getChannel(interaction.guild.id)
 
@@ -35,13 +34,36 @@ module.exports = {
                     guildId: interaction.guild.id,
                     logs: null,
                     welcome: null,
-                    invites: chnlId
+                    invites: chnlId,
+                    logSettings: "{}"
                 })
             }else {
-                chnlService.updateInvite(interaction.guild.id, chnlId)
+                chnlService.updateField(interaction.guild.id, "invites", chnlId)
             }
             return interaction.reply({
                 content: `✅ Set **${chnl.name}** to log **Invites**`,
+                ephemeral: true
+            })
+        }
+
+        if(option === "opt_logs"){
+            const chnlId = chnl.id
+
+            const existing = chnlService.getChannel(interaction.guild.id)
+
+            if(!existing){
+                chnlService.saveChnl({
+                    guildId: interaction.guild.id,
+                    logs: chnlId,
+                    welcome: null,
+                    invites: null,
+                    logSettings: "{}"
+                })
+            }else{
+                chnlService.updateField(interaction.guild.id, "logs", chnlId)
+            }
+            return interaction.reply({
+                content: `✅ Set **${chnl.name}** to log **Logs**`,
                 ephemeral: true
             })
         }
