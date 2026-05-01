@@ -31,8 +31,6 @@ class LoggingManger {
         const settings = this.getSettings(guild.id)
         if(!settings) return
 
-        if (!settings.logSettings[type]) return;
-
         const channel = guild.channels.cache.get(settings.logsChannel)
         if(!channel) return
 

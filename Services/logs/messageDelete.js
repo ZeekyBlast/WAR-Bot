@@ -7,6 +7,10 @@ module.exports = {
     async execute(message){
         if(!message.guild) return
 
+        const username = message.author?.username || "Unknown User";
+        const avatar = message.author?.displayAvatarURL?.() || null;
+        const content = message.content || "*Message content unavailable*";
+
         const embed = new EmbedBuilder()
             .setColor(Colors.DarkRed)
             .setTitle("Message Deleted")
