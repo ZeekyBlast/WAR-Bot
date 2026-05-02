@@ -8,8 +8,8 @@ module.exports = {
 
         const embed = new EmbedBuilder()
             .setColor(Colors.DarkRed)
-            .setTitle("User Banned")
-            .setDescription(`**${member.username}** was banned`)
+            .setTitle("User Kicked")
+            .setDescription(`**User:** ${member.username}`)
             .setTimestamp()
             .setAuthor({ name: member.username, iconURL: member.displayAvatarURL() })
 

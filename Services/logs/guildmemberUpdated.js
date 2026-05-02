@@ -17,7 +17,7 @@ module.exports = {
                 const embed = new EmbedBuilder()
                     .setColor(Colors.DarkRed)
                     .setTitle("Member Timed Out")
-                    .setDescription(`**User:** ${newMember.user.tag}\n**Time**: ${formatted}`)
+                    .setDescription(`**User:** ${newMember.user.tag}\n**Time:** ${formatted}`)
                     .setThumbnail(newMember.user.displayAvatarURL({ size: 1024 }))
                     .setTimestamp()
                     .setAuthor({
@@ -48,7 +48,6 @@ module.exports = {
                     .setColor(Colors.DarkRed)
                     .setTitle("Member Nickname Updated")
                     .setDescription(
-                        `${newMember.user.tag}'s nickname changed:\n` +
                         `**${oldNick ?? "None"}** → **${newNick ?? "None"}**`
                     )
                     .setTimestamp()

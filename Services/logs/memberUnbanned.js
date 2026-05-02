@@ -10,7 +10,7 @@ module.exports = {
         const embed = new EmbedBuilder()
             .setColor(Colors.DarkRed)
             .setTitle("User Unbanned")
-            .setDescription(`**${user.username}** was unbanned`)
+            .setDescription(`**User:** ${user.username}`)
             .setTimestamp()
             .setAuthor({ name: user.username, iconURL: user.displayAvatarURL() })
 
