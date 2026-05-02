@@ -5,7 +5,7 @@ module.exports = {
     name: "messageUpdate",
 
     async execute(oldMessage, newMessage) {
-        if(oldMessage.author.bot) return;
+        if (newMessage.author.bot) return;
             if(oldMessage !== newMessage){
                 const embed = new EmbedBuilder()
                     .setColor(Colors.DarkRed)
